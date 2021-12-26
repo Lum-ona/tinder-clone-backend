@@ -2,17 +2,18 @@ import express from "express";
 import mongoose from "mongoose";
 import Cards from "./dbCards.js";
 import Cors from "cors";
-//Add Config
+
+// 1. Add Config
 const app = express();
 const port = process.env.PORT || 8001;
-const connection_url =
-  "mongodb+srv://admin:Rnd4hAi9n7FoVfPK@cluster0.feszx.mongodb.net/tinderdb?retryWrites=true&w=majority";
+//4.
+const connection_url = `mongodb+srv://tinder-clone:o4KtKpvICOsT4aAc@cluster0.pn7z3.mongodb.net/tinderdb?retryWrites=true&w=majority`;
 
 //Add middle layers
 app.use(express.json());
 app.use(Cors());
 
-//db config
+//5. db config
 mongoose.connect(connection_url),
   {
     useNewUrlParser: true,
@@ -20,16 +21,17 @@ mongoose.connect(connection_url),
     useUnifiedTopology: true,
   };
 
-//API endpoints
+//2. API endpoints
 app.get("/", (req, res) => res.status(200).send("Hello Lumona"));
+//.6
 app.post("/tinder/cards", (req, res) => {
   const dbCard = req.body;
 
   Cards.create(dbCard, (err, data) => {
     if (err) {
-      res.status(500).send(err);
+      res.status(500).send(err); //internal server error
     } else {
-      res.status(201).send(data);
+      res.status(201).send(data); //Created
     }
   });
 });
@@ -39,10 +41,10 @@ app.get("/tinder/cards", (req, res) => {
     if (err) {
       res.status(500).send(err);
     } else {
-      res.status(200).send(data);
+      res.status(200).send(data); //Success- Retrives
     }
   });
 });
 
-//Listener
+//3. Listener
 app.listen(port, () => console.log(`listening on localhost: ${port}`));
